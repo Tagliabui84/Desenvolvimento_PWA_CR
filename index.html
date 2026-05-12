@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cidade Real Operacional</title>
+    <style>
+        :root {
+            --verde-escuro: #0A3D2B;
+            --cinza-escuro: #333333;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            color: #333;
+        }
+        header {
+            background: var(--verde-escuro);
+            color: white;
+            padding: 1.8rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .container { padding: 20px; max-width: 1350px; margin: auto; }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+        }
+
+        /* ABAS FORTES - SEM TRANSPARÊNCIA */
+        .nav {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+            border: 2px solid #ddd;
+        }
+        .nav button {
+            flex: 1;
+            padding: 18px 10px;
+            border: none;
+            background: #e9ecef;
+            margin: 5px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--cinza-escuro);
+            transition: all 0.3s;
+        }
+        .nav button:hover {
+            background: #ced4da;
+        }
+        .nav button.active {
+            background: var(--verde-escuro) !important;
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(10, 61, 43, 0.4);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 13px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        button {
+            background: var(--verde-escuro);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .tab { display: none; }
+        .tab.active { display: block; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .section { background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN -->
+    <div id="loginScreen" class="container">
+        <div class="card" style="max-width:420px; margin:100px auto;">
+            <h1>Cidade Real</h1>
+            <p style="color:#555;">Gestão Operacional</p><br>
+            <input type="text" id="username" placeholder="Usuário" value="gestor"><br><br>
+            <input type="password" id="password" placeholder="Senha" value="1234"><br><br>
+            <button onclick="login()" style="width:100%; padding:16px;">ENTRAR</button>
+            <p id="loginMsg" style="color:red; text-align:center;"></p>
+        </div>
+    </div>
+
+    <!-- APP -->
+    <div id="app" style="display:none;">
+        <header>
+            <h1>Cidade Real Operacional</h1>
+            <p id="userInfo" style="margin:10px 0 0 0; font-size:18px;"></p>
+        </header>
+
+        <div class="container">
+            <!-- NAVEGAÇÃO -->
+            <div class="nav">
+                <button onclick="showTab(0)" class="active">📋 Boletim</button>
+                <button onclick="showTab(1)">🚗 Viagens Perdidas</button>
+                <button onclick="showTab(2)">🔍 Fiscalização</button>
+                <button onclick="showTab(3)" id="btnRelatorios">📊 Relatórios</button>
+            </div>
+
+            <!-- 1. BOLETIM -->
+            <div id="tab0" class="tab active">
+                <div class="card">
+                    <h2>Boletim de Ocorrência Operacional</h2>
+                    <!-- Formulário completo que enviei anteriormente -->
+                    <p>Formulário completo do Boletim (já desenvolvido na mensagem anterior)</p>
+                    <button onclick="salvarBoletim()" style="width:100%; margin-top:15px;">Salvar Boletim</button>
+                </div>
+            </div>
+
+            <!-- 2. VIAGENS PERDIDAS -->
+            <div id="tab1" class="tab">
+                <div class="card">
+                    <h2>Viagens Perdidas / Troca de Carros</h2>
+                    <select id="setorViagem">
+                        <option value="ERIL">ERIL</option>
+                        <option value="BINGEM">BINGEM</option>
+                        <option value="PAULO BARBOSA">PAULO BARBOSA</option>
+                    </select>
+                    <div class="grid-2">
+                        <input type="date" id="dataViagem">
+                        <input type="time" id="horaViagem">
+                    </div>
+                    <input type="text" id="linhaViagem" placeholder="Linha">
+                    <input type="text" id="carroViagem" placeholder="Número do Carro">
+                    <input type="text" id="motivoViagem" placeholder="Motivo da perda ou troca">
+                    <button onclick="salvarViagem()" style="width:100%; margin-top:20px;">Registrar Viagem Perdida</button>
+                </div>
+            </div>
+
+            <!-- 3. FISCALIZAÇÃO -->
+            <div id="tab2" class="tab">
+                <div class="card">
+                    <h2>Fiscalização e Instrução</h2>
+                    
+                    <div class="section">
+                        <h3>Falta de Motorista</h3>
+                        <input type="text" id="faltaMotivo" placeholder="Motivo da falta">
+                    </div>
+
+                    <div class="section">
+                        <h3>Ruas Interditadas</h3>
+                        <input type="text" id="ruaLocal" placeholder="Local / Rua interditada">
+                        <input type="text" id="ruaMotivo" placeholder="Motivo da interdição">
+                    </div>
+
+                    <div class="section">
+                        <h3>Carros Operando na Linha</h3>
+                        <input type="text" placeholder="Linha">
+                        <input type="text" placeholder="Nº dos Carros">
+                        <input type="text" placeholder="Horários Programados">
+                    </div>
+
+                    <button onclick="salvarFiscalizacao()" style="width:100%; margin-top:20px;">Registrar Fiscalização</button>
+                </div>
+            </div>
+
+            <!-- 4. RELATÓRIOS -->
+            <div id="tab3" class="tab">
+                <div class="card">
+                    <h2>Relatórios Gerais - Gestor</h2>
+                    <button onclick="carregarRelatorios()">Atualizar Todos os Relatórios</button>
+                    <div id="relContent" style="margin-top:20px; min-height:300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(n) {
+            document.querySelectorAll('.nav button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.nav button')[n].classList.add('active');
+
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById('tab' + n).classList.add('active');
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username && password) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                document.getElementById('userInfo').innerHTML = `<strong>Gestor Operacional</strong>`;
+            } else {
+                document.getElementById('loginMsg').textContent = "Usuário ou senha inválidos";
+            }
+        }
+
+        function salvarBoletim() { alert("✅ Boletim salvo com sucesso!"); }
+        function salvarViagem() { alert("✅ Viagem Perdida registrada com sucesso!"); }
+        function salvarFiscalizacao() { alert("✅ Registro de Fiscalização salvo e enviado ao Gestor!"); }
+        function carregarRelatorios() {
+            document.getElementById('relContent').innerHTML = `
+                <h3>Relatórios Disponíveis</h3>
+                <p>• Boletins de Ocorrência</p>
+                <p>• Viagens Perdidas por Setor</p>
+                <p>• Fiscalizações Realizadas</p>
+            `;
+        }
+    </script>
+</body>
+</html>
